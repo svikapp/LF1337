@@ -1,6 +1,8 @@
 
 # Svik-server
 
+This is the express backend for the svik app
+
 #### Visit our website
 
 http://svik.netlify.app
@@ -41,5 +43,5 @@ Run the server
 
 ## License
 
-License under [Apache 2.0](https://choosealicense.com/licenses/apache-2.0/)
+This project is licensed under the Apache License 2.0. You can read the full text of the license [here](https://choosealicense.com/licenses/apache-2.0/)
 

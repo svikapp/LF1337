@@ -16,7 +16,7 @@ export class AuthController {
         const basePassword = user?.password;
         //check if user exists
         if (basePassword === undefined) {
-            return res.send({
+            return res.status(407).send({
                 code: 407,
                 message: "User not found",
                 authenticated: false
@@ -28,14 +28,14 @@ export class AuthController {
             basePassword,
             async (error: any, result: any) => {
                 if (error) {
-                    return res.send({
+                    return res.status(401).send({
                         code: 401,
                         message: "Something went wrong!",
                         authenticated: false
                     })
                 }
                 if (!result) {
-                    return res.send({
+                    return res.status(401).send({
                         code: 401,
                         message: "Wrong Password",
                         authenticated: false
@@ -59,7 +59,7 @@ export class AuthController {
                                 authentication: false
                             });
                         }
-                        return res.send({
+                        return res.status(201).send({
                             code: 201,
                             message: data,
                             authentication: true
@@ -86,7 +86,7 @@ export class AuthController {
         //check if user exists
         const userAlreadyExists = await UserRepository.checkUserExists(email);
         if (userAlreadyExists) {
-            return res.send({
+            return res.status(401).send({
                 code: 401,
                 authentication: false,
                 message: "User Already exists"
@@ -113,7 +113,7 @@ export class AuthController {
                         authentication: false
                     });
                 }
-                return res.send({
+                return res.status(201).send({
                     code: 201,
                     message: data,
                     authentication: true
