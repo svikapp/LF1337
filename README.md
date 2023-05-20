@@ -1,7 +1,7 @@
 
 # Svik-server
 
-This is the express backend for the svik app
+Express backend for the svik app
 
 #### Visit our website
 
@@ -31,6 +31,14 @@ Run the server
 ```bash
     npm run dev
 ```
+
+### Tech. stack
+
+* [Node with TS](https://nodejs.org)
+* [Express JS](https://expressjs.com) for server
+* [Type ORM](https://typeorm.io) for DB connection
+* [Postgresql](https://typeorm.io) DB
+* [Socket io](https://socket.io) for Websockets
 
 
 
