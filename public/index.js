@@ -20,6 +20,7 @@ const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const friend_routes_1 = __importDefault(require("./routes/friend.routes"));
 const socket_io_1 = require("socket.io");
 const http_1 = require("http");
+const isProd = process.argv.includes("--prod");
 // initalize type orm
 data_source_1.AppDataSource.initialize().then(() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Db Connected');
@@ -30,7 +31,9 @@ data_source_1.AppDataSource.initialize().then(() => __awaiter(void 0, void 0, vo
     // app.listen(3000)
     // console.log('Server started at http://localhost:3000')
     httpServer.listen(3000, () => {
-        console.log('Server started at http://localhost:3000');
+        isProd ?
+            console.log('Connected to PROD DB\nStarted Server @localhost:3000') :
+            console.log('Connected to DEV DB\nStarted Server @localhost:3000');
     });
     // Routes
     app.use("/user", auth_routes_1.default);

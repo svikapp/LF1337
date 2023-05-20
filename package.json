@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc && nodemon src/index.ts",
+    "dev": "tsc && nodemon src/index.ts --dev",
+    "prod": "tsc && nodemon src/index.ts --prod",
     "build": "tsc -p ."
   },
   "keywords": [],
