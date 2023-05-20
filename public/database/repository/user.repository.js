@@ -26,7 +26,7 @@ exports.UserRepository = data_source_1.AppDataSource.getRepository(User_1.User).
     findUserPassword(email) {
         return __awaiter(this, void 0, void 0, function* () {
             const baseUserPassword = yield this.createQueryBuilder("user")
-                .select("user.password")
+                .select()
                 .where("user.email = :email", { email })
                 .getOne();
             return baseUserPassword;
@@ -34,7 +34,7 @@ exports.UserRepository = data_source_1.AppDataSource.getRepository(User_1.User).
     },
     createUser(username, email, hashedPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.createQueryBuilder("user")
+            let result = yield this.createQueryBuilder("user")
                 .insert()
                 .values({
                 username,
@@ -42,37 +42,11 @@ exports.UserRepository = data_source_1.AppDataSource.getRepository(User_1.User).
                 password: hashedPassword,
             })
                 .execute();
+            return result.raw[0].id;
         });
     },
     searchUser(username, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const users = await this
-            //     .createQueryBuilder('user')
-            //     .leftJoinAndSelect('user.sentFriendRequests', 'sentFriendRequests')
-            //     .leftJoinAndSelect('user.receivedFriendRequests', 'receivedFriendRequests')
-            //     .select(['user.id', 'user.username', 'sentFriendRequests.id', 'receivedFriendRequests.id'])
-            //     .addSelect("CASE WHEN (sentFriendRequests.id IS NOT NULL OR receivedFriendRequests.id IS NOT NULL) THEN true ELSE false END", "isFriend")
-            //     .where('user.username ILIKE :username', { username: `%${username}%` })
-            //     .getMany();
-            // console.log(users);
-            // const users = await this
-            //     .createQueryBuilder('user')
-            //     .select('user.*, friend.id IS NOT NULL as isFriend')
-            //     .from(User, 'user')
-            //     .leftJoin(Friend, 'friend', 'user.id = friend.senderId AND friend.receiverId = :currentUserId', { userId })
-            //     .orWhere('user.id != :currentUserId', { userId })
-            //     .andWhere('friend.id IS NULL')
-            //     .andWhere('LOWER(user.username) LIKE LOWER(:username)', { username: `%${username}%` })
-            //     .getRawMany()
-            // console.log(users)
-            // const users = await this
-            //     .createQueryBuilder('user')
-            //     .select(['user.id', 'user.username'])
-            //     .addSelect('(CASE WHEN friend.id IS NOT NULL THEN true ELSE false END)', 'isFriend')
-            //     .leftJoin(Friend, 'friend', 'user.id = friend.receiverId AND friend.senderId = :userId', { userId })
-            //     .where('LOWER(user.username) LIKE LOWER(:username)', { username: `%${username}%` })
-            //     .andWhere('user.id != :userId', { userId })
-            //     .getRawMany();
             const users = yield this
                 .createQueryBuilder('user')
                 .select(['user.id', 'user.username'])

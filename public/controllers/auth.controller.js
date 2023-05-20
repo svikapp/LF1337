@@ -48,10 +48,12 @@ class AuthController {
             let { email, password } = req.body;
             let jwt_secret_key = process.env.ACCESS_SECRET_KEY;
             const user = yield user_repository_1.UserRepository.findUserPassword(email);
+            // console.log(user)
             const basePassword = user === null || user === void 0 ? void 0 : user.password;
+            const userId = user === null || user === void 0 ? void 0 : user.id;
             //check if user exists
             if (basePassword === undefined) {
-                return res.send({
+                return res.status(407).send({
                     code: 407,
                     message: "User not found",
                     authenticated: false
@@ -60,14 +62,14 @@ class AuthController {
             //comparing both passwords
             bcrypt_1.default.compare(password, basePassword, (error, result) => __awaiter(this, void 0, void 0, function* () {
                 if (error) {
-                    return res.send({
+                    return res.status(401).send({
                         code: 401,
                         message: "Something went wrong!",
                         authenticated: false
                     });
                 }
                 if (!result) {
-                    return res.send({
+                    return res.status(401).send({
                         code: 401,
                         message: "Wrong Password",
                         authenticated: false
@@ -75,7 +77,8 @@ class AuthController {
                 }
                 // sign the JWT
                 jsonwebtoken_1.default.sign({
-                    email
+                    email,
+                    userId,
                 }, jwt_secret_key, {
                     expiresIn: "1h",
                 }, (error, data) => __awaiter(this, void 0, void 0, function* () {
@@ -86,7 +89,7 @@ class AuthController {
                             authentication: false
                         });
                     }
-                    return res.send({
+                    return res.status(201).send({
                         code: 201,
                         message: data,
                         authentication: true
@@ -111,7 +114,7 @@ class AuthController {
             //check if user exists
             const userAlreadyExists = yield user_repository_1.UserRepository.checkUserExists(email);
             if (userAlreadyExists) {
-                return res.send({
+                return res.status(401).send({
                     code: 401,
                     authentication: false,
                     message: "User Already exists"
@@ -120,10 +123,11 @@ class AuthController {
             //hashing the password
             const salt = yield bcrypt_1.default.genSalt(10);
             const hashedPassword = yield bcrypt_1.default.hash(password, salt);
-            yield user_repository_1.UserRepository.createUser(username, email, hashedPassword);
+            const userId = yield user_repository_1.UserRepository.createUser(username, email, hashedPassword);
             // sign JWT
             jsonwebtoken_1.default.sign({
-                email
+                email,
+                userId
             }, jwt_secret_key, {
                 expiresIn: "1h",
             }, (error, data) => __awaiter(this, void 0, void 0, function* () {
@@ -134,7 +138,7 @@ class AuthController {
                         authentication: false
                     });
                 }
-                return res.send({
+                return res.status(201).send({
                     code: 201,
                     message: data,
                     authentication: true
@@ -145,8 +149,10 @@ class AuthController {
     static search(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let username = req.query['username'];
+            // let username = res.locals.user;
             if (username != null) {
-                const result = yield user_repository_1.UserRepository.searchUser(username, req.body['userId']);
+                let { userId } = res.locals.user;
+                const result = yield user_repository_1.UserRepository.searchUser(username, userId);
                 res.send(result);
             }
             else {

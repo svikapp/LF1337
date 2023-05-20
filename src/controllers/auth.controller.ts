@@ -4,6 +4,7 @@ import * as EmailValidator from "email-validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { AuthRequest } from "../middleware/verify_jwt";
 
 dotenv.config();
 
@@ -13,7 +14,9 @@ export class AuthController {
         let { email, password } = req.body;
         let jwt_secret_key = process.env.ACCESS_SECRET_KEY as string;
         const user = await UserRepository.findUserPassword(email);
+        // console.log(user)
         const basePassword = user?.password;
+        const userId = user?.id;
         //check if user exists
         if (basePassword === undefined) {
             return res.status(407).send({
@@ -45,7 +48,8 @@ export class AuthController {
                 // sign the JWT
                 jwt.sign(
                     {
-                        email
+                        email,
+                        userId,
                     },
                     jwt_secret_key,
                     {
@@ -95,11 +99,12 @@ export class AuthController {
         //hashing the password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        await UserRepository.createUser(username, email, hashedPassword);
+        const userId = await UserRepository.createUser(username, email, hashedPassword);
         // sign JWT
         jwt.sign(
             {
-                email
+                email,
+                userId
             },
             jwt_secret_key,
             {
@@ -125,8 +130,10 @@ export class AuthController {
 
     static async search(req: Request, res: Response) {
         let username = req.query['username'] as string;
+        // let username = res.locals.user;
         if (username != null) {
-            const result = await UserRepository.searchUser(username, req.body['userId'])
+            let {userId} = res.locals.user;
+            const result = await UserRepository.searchUser(username, userId)
             res.send(result)
         }
         else {
