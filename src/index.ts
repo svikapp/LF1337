@@ -8,7 +8,7 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 
 const isProd = process.argv.includes("--prod");
-
+const port = isProd ? 8080 : 3000;
 // initalize type orm
 AppDataSource.initialize().then(async () => {
     console.log('Db Connected');
@@ -23,9 +23,9 @@ AppDataSource.initialize().then(async () => {
     // app.listen(3000)
     // console.log('Server started at http://localhost:3000')
 
-    httpServer.listen(3000, () => {
+    httpServer.listen(port, () => {
         isProd?
-         console.log('Connected to PROD DB\nStarted Server @localhost:3000'):
+         console.log('Connected to PROD DB\nStarted Server @localhost:8080'):
          console.log('Connected to DEV DB\nStarted Server @localhost:3000');
     });
 
