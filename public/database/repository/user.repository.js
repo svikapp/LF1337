@@ -49,7 +49,7 @@ exports.UserRepository = data_source_1.AppDataSource.getRepository(User_1.User).
         return __awaiter(this, void 0, void 0, function* () {
             const users = yield this
                 .createQueryBuilder('user')
-                .select(['user.id', 'user.username'])
+                .select(['user.id', 'user.username', 'user.photourl'])
                 .addSelect('(CASE WHEN friend.id IS NOT NULL THEN true ELSE false END)', 'isFriend')
                 .leftJoin(Friend_1.Friend, 'friend', '(friend.senderId = :userId AND friend.receiverId = user.id) OR (friend.senderId = user.id AND friend.receiverId = :userId)', { userId })
                 .where('LOWER(user.username) LIKE LOWER(:username)', { username: `%${username}%` })

@@ -5,7 +5,7 @@ import { User } from "./database/entity/User"
 
 const isProd = process.argv.includes("--prod");
 
-console.log(isProd);
+// console.log(isProd);
 
 export const AppDataSource = new DataSource({
     type: "postgres",

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsc && nodemon src/index.ts --dev",
     "prod": "tsc && nodemon src/index.ts --prod",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "start": "node public/index.js --prod"
   },
   "keywords": [],
   "author": "",

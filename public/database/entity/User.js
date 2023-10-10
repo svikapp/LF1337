@@ -18,6 +18,9 @@ __decorate([
     (0, typeorm_1.Column)("text")
 ], User.prototype, "username", void 0);
 __decorate([
+    (0, typeorm_1.Column)("text", { 'default': "" })
+], User.prototype, "photourl", void 0);
+__decorate([
     (0, typeorm_1.Column)("text")
 ], User.prototype, "email", void 0);
 __decorate([

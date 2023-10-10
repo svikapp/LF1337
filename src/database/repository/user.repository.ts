@@ -39,7 +39,7 @@ export const UserRepository = AppDataSource.getRepository(User).extend({
     async searchUser(username: string, userId: string) {
         const users = await this
             .createQueryBuilder('user')
-            .select(['user.id', 'user.username'])
+            .select(['user.id', 'user.username', 'user.photourl'])
             .addSelect('(CASE WHEN friend.id IS NOT NULL THEN true ELSE false END)', 'isFriend')
             .leftJoin(
                 Friend,

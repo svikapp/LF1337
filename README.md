@@ -37,7 +37,7 @@ Run the server
 * [Node with TS](https://nodejs.org)
 * [Express JS](https://expressjs.com) for server
 * [Type ORM](https://typeorm.io) for DB connection
-* [Postgresql](https://typeorm.io) DB
+* [Postgresql](https://postgresql.org) DB
 * [Socket io](https://socket.io) for Websockets
 
 

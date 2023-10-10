@@ -11,6 +11,9 @@ export class User {
     @Column("text")
     username: string
 
+    @Column("text",{'default':""})
+    photourl:string
+
     @Column("text")
     email: string
 
